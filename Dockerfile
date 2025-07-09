@@ -1,20 +1,23 @@
-# Use official OpenJDK base image
-FROM openjdk:17-jdk-slim
+# Use official Maven image to build the app
+FROM maven:3.9.4-eclipse-temurin-17 as build
 
-# Set working directory inside container
 WORKDIR /app
 
-# Copy everything from your project folder into the container
-COPY . .
+# Copy the pom and source code
+COPY pom.xml .
+COPY src ./src
 
-# Grant execute permissions to mvnw if not already
-RUN chmod +x mvnw
+# Package the application (skip tests to speed it up)
+RUN mvn clean package -DskipTests
 
-# Build the app (skipping tests for speed)
-RUN ./mvnw clean package -DskipTests
+# Use OpenJDK image to run the app
+FROM openjdk:17-jdk-slim
 
-# Expose port (default Spring Boot port)
-EXPOSE 8080
+WORKDIR /app
 
-# Run the Spring Boot jar
-CMD ["java", "-jar", "target/*.jar"]
+# Copy the jar file from the build stage
+COPY --from=build /app/target/*.jar app.jar
+
+# Run the jar file
+ENTRYPOINT ["java", "-jar", "app.jar"]
+
