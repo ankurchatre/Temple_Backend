@@ -57,24 +57,27 @@ public class UserControler {
 	}
 	
 	@PostMapping("/temple/{id}/upload")
-	public ResponseEntity<?>addImg(@PathVariable int id,@RequestParam("image") MultipartFile file)
-	{
-		boolean Upload=upload.uploadFile(file);
-		if (Upload !=true) {
-			return ResponseEntity.status(404).body("image not uploaded");
-		}
-		
-		Temple temple1=service.getTemple(id);
-		String imgPath= ServletUriComponentsBuilder.fromCurrentContextPath()
-				.path("/image/")
-				.path(file.getOriginalFilename())
-				.toUriString();
-	 temple1.setImageUrl(imgPath);
-	 Temple nTemple=service.addData(temple1);
-	 return ResponseEntity.ok(nTemple);			
-		
-		
-	}
+public ResponseEntity<?> addImg(@PathVariable int id, @RequestParam("image") MultipartFile file) {
+    boolean isUploaded = upload.uploadFile(file);
+    if (!isUploaded) {
+        return ResponseEntity.status(500).body("Image not uploaded");
+    }
+
+    Temple temple = service.getTemple(id);
+    if (temple == null) {
+        return ResponseEntity.status(404).body("Temple not found");
+    }
+
+    String imgPath = ServletUriComponentsBuilder.fromCurrentContextPath()
+            .path("/uploads/")
+            .path(file.getOriginalFilename())
+            .toUriString();
+    temple.setImageUrl(imgPath);
+
+    Temple updatedTemple = service.addData(temple); // Consider renaming addData() to updateData() if it's for updates
+    return ResponseEntity.ok(updatedTemple);
+}
+
 	
 
 }
