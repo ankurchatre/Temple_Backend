@@ -22,7 +22,7 @@ import com.main.upload.ImageUpload;
 
 
 @RestController
-@CrossOrigin (origins ="http://localhost:5173/")
+@CrossOrigin (origins ="*")
 public class UserControler {
 	@Autowired
 	TempleService service;
