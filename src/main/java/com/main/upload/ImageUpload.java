@@ -1,8 +1,20 @@
+package com.main.upload;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+
+@Component
 public class ImageUpload {
     private final String UPLOAD_DIR;
 
     public ImageUpload() {
-        this.UPLOAD_DIR = "uploads"; // Relative folder
+        this.UPLOAD_DIR = "uploads";
         File uploadDir = new File(UPLOAD_DIR);
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();
