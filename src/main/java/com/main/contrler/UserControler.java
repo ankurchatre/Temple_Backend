@@ -21,7 +21,7 @@ import com.main.upload.ImageUpload;
 
 
 @RestController
-@CrossOrigin (origins ="*")
+@CrossOrigin (origins ="http://localhost:5173/")
 public class UserControler {
 	@Autowired
 	TempleService service;
@@ -54,6 +54,18 @@ public class UserControler {
 			return ResponseEntity.ok(update);
 		}
 		return ResponseEntity.status(404).body("Inter Vallied id....");
+	}
+	@DeleteMapping("/temple/{id}")
+	public ResponseEntity<List<Temple>> deletById(@PathVariable int id){
+		service.deletById(id);
+		List<Temple> temples=service.getAllTemple();
+		return ResponseEntity.ok(temples);
+	}
+	@DeleteMapping("/temple")
+	public ResponseEntity<List<Temple>> delet(){
+		service.deletAll();
+		List<Temple> temples=service.getAllTemple();
+		return ResponseEntity.ok(temples);
 	}
 	
 	@PostMapping("/temple/{id}/upload")

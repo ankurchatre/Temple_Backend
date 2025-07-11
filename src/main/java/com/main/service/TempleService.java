@@ -9,4 +9,8 @@ public interface TempleService {
 	public Temple getTemple(int id);
 	public List<Temple> getAllTemple();
 	public Temple updat(int id, Temple temple);
+	
+	public void deletById(int id);
+	public void deletAll();
+	
 }

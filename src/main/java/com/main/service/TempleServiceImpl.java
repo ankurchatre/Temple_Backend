@@ -38,6 +38,15 @@ public class TempleServiceImpl implements TempleService {
 		}
 		return null;
 	}
-	
+	@Override
+	public void deletById(int id) {
+		reposetory.deleteById(id);	
+	}
+
+	@Override
+	public void deletAll() {
+		reposetory.deleteAll();
+		
+	}
 
 }
